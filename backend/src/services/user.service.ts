@@ -27,5 +27,5 @@ export async function getUserService(user: userlogindto) {
 
   const jwt_token = generateJWT(user.email);
 
-  return jwt_token;
+  return [jwt_token, userDetails._id];
 }

@@ -1,0 +1,10 @@
+#carousell-section {
+  width: 100vw;
+
+  img {
+    width: 100vw !important;
+    @media (max-width: 768px) {
+      height: 400px;
+    }
+  }
+}

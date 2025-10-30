@@ -6,8 +6,11 @@ import AppErrorMiddleware from "./middlewares/app-error.middleware";
 import UncaughtErrorMiddleware from "./middlewares/uncaught-error.middleware";
 import router from "./routers/index.router";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app: Express = express();
+
+app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 

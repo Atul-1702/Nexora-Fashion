@@ -1,0 +1,184 @@
+@use "../../../SCSS/font-mixins" as fontMixin;
+@use "../../../SCSS/variables" as variables;
+#header-component-desktop-container {
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // z-index: 9;
+  // width: 100%;
+  background-color: lightpink;
+  .top-header-section {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px 16px;
+    height: 30px;
+    background-color: rgb(255, 239, 223);
+    gap: 24px;
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
+    .quick-top-details {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      figcaption {
+        @include fontMixin.fontStyleSemiBold(
+          $fontSize: 13px,
+          $fontColor: variables.$dark-dark-l-2
+        );
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+      }
+    }
+  }
+
+  .middle-header-section {
+    height: 60px;
+    display: flex;
+    padding: 8px 32px;
+    align-items: center;
+    justify-content: space-between;
+
+    .nexora-logo {
+      margin: 0;
+      @media (max-width: 768px) {
+        img {
+          width: 116px;
+          height: 32px;
+        }
+      }
+    }
+    .search-container {
+      width: 70%;
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      align-items: center;
+      @media (min-width: 768px) and (max-width: 1250px) {
+        width: 50%;
+      }
+      @media (max-width: 768px) {
+        display: none;
+      }
+      input {
+        width: 90%;
+        padding: 6px 12px;
+        height: 26px;
+      }
+      img {
+        cursor: pointer;
+        padding: 6px 12px;
+        background-color: rgb(255, 193, 7);
+        border-radius: 4px;
+        height: 26px;
+        width: 16px;
+        border-width: 0.8px;
+        border-style: solid;
+      }
+      img:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+      }
+    }
+    .cart-and-user-container {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+      figure {
+        margin: 0;
+        cursor: pointer;
+      }
+      .cart-container-header {
+        position: relative;
+        figcaption {
+          border-radius: 50%;
+          position: absolute;
+          top: -5px;
+          right: -8px;
+          padding: 2px 5px;
+          width: 6px;
+          height: 15px;
+          background-color: #f00;
+          display: grid;
+          place-items: center;
+          @include fontMixin.fontStyleSemiBold(
+            $fontColor: variables.$light-white,
+            $fontSize: 10px
+          );
+        }
+      }
+      .user-container {
+        position: relative;
+        img:hover ~ figcaption {
+          display: block;
+        }
+        figcaption {
+          display: none;
+          position: absolute;
+          bottom: -102px;
+          right: 0px;
+          min-width: 150px;
+          background-color: rgb(251, 227, 215);
+          border-radius: 8px;
+          padding: 10px;
+          z-index: 2;
+        }
+        figcaption:hover {
+          display: block;
+        }
+        ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          li {
+            padding: 12px 15px;
+            color: rgb(33, 37, 41);
+            text-align: center;
+          }
+          li:hover {
+            background: #f7941d;
+            color: #fff;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  .botton-header-section {
+    background-color: rgb(255, 239, 223);
+    height: 42px;
+    ul {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 56px;
+      list-style: none;
+      height: 40px;
+      padding: 0px 15px;
+      @media (max-width: 768px) {
+        gap: 32px;
+      }
+      .active-link {
+        color: #ff6600 !important;
+        font-weight: bold !important;
+        border-bottom: 2px solid #ff6600 !important;
+      }
+
+      li {
+        @include fontMixin.fontStyleBold(
+          $fontColor: variables.$dark-dark-d-2,
+          $fontSize: 16px
+        );
+      }
+    }
+  }
+}

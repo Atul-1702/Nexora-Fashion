@@ -12,7 +12,7 @@ export async function createUserHandler(req: Request, res: Response) {
 }
 
 export async function getUserHandler(req: Request, res: Response) {
-  const token = await getUserService(req.body);
+  const [token, userId] = await getUserService(req.body);
 
   res.cookie("token", token, {
     httpOnly: true,
@@ -23,5 +23,6 @@ export async function getUserHandler(req: Request, res: Response) {
   res.status(StatusCodes.OK).json({
     success: true,
     message: "User logged in successfully.",
+    userId,
   });
 }
