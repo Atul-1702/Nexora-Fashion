@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const UserModel = new mongoose.Schema({
   name: {
@@ -13,9 +14,16 @@ const UserModel = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required."],
-    minLength: [6, "Min length of password should be 6."],
-    maxLength: [10, "Max length of password should be 10."],
+    select: false,
   },
+});
+
+UserModel.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
 export default mongoose.model("user", UserModel);
