@@ -1,0 +1,25 @@
+@use "../SCSS/font-mixins" as fontMixin;
+@use "../SCSS/variables" as variables;
+.trending-fashion-container {
+  width: calc(100% - 400px);
+  margin: auto;
+  @media (max-width: 1250px) {
+    width: calc(100% - 300px);
+  }
+  @media (max-width: 768px) {
+    width: calc(100% - 220px);
+  }
+  h2 {
+    background-color: rgb(255, 239, 223);
+    @include fontMixin.fontStyleBold(
+      $fontSize: 36px,
+      $fontColor: variables.$dark-dark-d-2
+    );
+    padding: 16px 24px;
+    border-radius: 4px;
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+  }
+}

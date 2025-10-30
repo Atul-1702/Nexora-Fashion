@@ -16,17 +16,20 @@ export async function getCartByUser(userId: string) {
 }
 
 export async function updateCartByUser(cart: any) {
-  const updatedCart = await cartModel.findByIdAndUpdate(cart._id, cart);
+  const updatedCart = await cartModel.findByIdAndUpdate(cart._id, cart, {
+    new: true,
+  });
   return updatedCart;
 }
 
 export async function deleteCartItem(cartId: string) {
-  const deletedRecord = await cartModel.findByIdAndDelete(cartId);
-  return deletedRecord;
+  const deletedRecord = await cartModel.findByIdAndDelete(cartId, {
+    new: true,
+  });
+  return [];
 }
 
 export async function getCartById(id: string) {
-  console.log(id);
   const cartById = await cartModel.findById(id);
   return cartById;
 }

@@ -6,6 +6,7 @@ import {
   getCartByUser,
   updateCartByUser,
 } from "../repositories/cart.repository";
+import { NotFoundError } from "../utils/app.error";
 import catchErrorHelper from "../utils/catch.error";
 
 export async function addToCartService(cart: cartdto) {
@@ -32,7 +33,18 @@ export async function deleteCartItemService(cartId: string, productId: string) {
           userCartDetails.product.remove(p);
         }
       }
-      return userCartDetails;
+      return await updateCartByUser(userCartDetails);
     }
   }
+}
+
+export async function getCartByUserServcie(userId: string) {
+  const userCart = await catchErrorHelper(async () => {
+    return await getCartByUser(userId);
+  });
+
+  if (!userCart) {
+    throw new NotFoundError("Products does not exists in cart.");
+  }
+  return userCart;
 }

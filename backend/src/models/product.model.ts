@@ -21,6 +21,10 @@ const ProductModel = new mongoose.Schema({
     type: String,
     required: [true, "Product image is required"],
   },
+  __v: {
+    type: Number,
+    select: false,
+  },
 });
 
 export default mongoose.model("product", ProductModel);

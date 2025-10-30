@@ -10,6 +10,10 @@ import userLoginZodSchema from "../dto/user-login.dto";
 const userRouter: Router = express.Router();
 
 userRouter.post("/", zodSchemaValidator(userZodSchema), createUserHandler);
-userRouter.get("/", zodSchemaValidator(userLoginZodSchema), getUserHandler);
+userRouter.post(
+  "/login",
+  zodSchemaValidator(userLoginZodSchema),
+  getUserHandler
+);
 
 export default userRouter;
