@@ -30,3 +30,21 @@ export class ConflictError implements AppError {
     this.message = msg || ReasonPhrases.CONFLICT;
   }
 }
+
+export class NotFoundError implements AppError {
+  name: string = ReasonPhrases.NOT_FOUND;
+  statusCode: number = StatusCodes.NOT_FOUND;
+  message: string = "";
+  constructor(msg?: string) {
+    this.message = msg || ReasonPhrases.NOT_FOUND;
+  }
+}
+
+export class UnauthorizedError implements AppError {
+  name: string = ReasonPhrases.UNAUTHORIZED;
+  statusCode: number = StatusCodes.UNAUTHORIZED;
+  message: string = "";
+  constructor(msg?: string) {
+    this.message = msg || ReasonPhrases.UNAUTHORIZED;
+  }
+}

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { createUserService } from "../services/user.service";
+import { createUserService, getUserService } from "../services/user.service";
 import { StatusCodes } from "http-status-codes";
-import { success } from "zod";
 
 export async function createUserHandler(req: Request, res: Response) {
   const userData = await createUserService(req.body);
@@ -9,5 +8,20 @@ export async function createUserHandler(req: Request, res: Response) {
     success: true,
     message: "User created successfully",
     data: userData,
+  });
+}
+
+export async function getUserHandler(req: Request, res: Response) {
+  const token = await getUserService(req.body);
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    maxAge: 24 * 1000 * 60 * 60,
+    secure: false,
+  });
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: "User logged in successfully.",
   });
 }

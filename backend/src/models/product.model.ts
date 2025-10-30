@@ -13,6 +13,10 @@ const ProductModel = new mongoose.Schema({
     min: [10, "Price must be at least 10"],
     max: [5000, "Price cannot exceed 5,000"],
   },
+  category: {
+    type: String,
+    required: [true, "Category is required."],
+  },
   image: {
     type: String,
     required: [true, "Product image is required"],
