@@ -4,7 +4,7 @@ import "./page.scss";
 import CardComponent from "./../components/card/card-component";
 
 type PageProps = {
-  searchParams: { category: "men" | "women" | "accessories" };
+  searchParams: { category: string };
 };
 
 async function fetchProductByCategory(category: string) {
