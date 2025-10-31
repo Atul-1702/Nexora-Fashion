@@ -1,8 +1,8 @@
 .cart-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 0 20px;
-  margin-top: 180px;
+
   @media (max-width: 768px) {
     padding: 0 16px;
   }
@@ -216,3 +216,10 @@
 //     }
 //   }
 // }
+
+.empty-cart-image {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 32px;
+}
