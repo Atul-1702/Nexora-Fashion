@@ -93,9 +93,9 @@ function Page() {
         />
       ) : (
         <div className="cart-content">
-          {cartData?.product?.map((product: any) => {
-            return (
-              <div className="cart-items" key={product.id._id}>
+          <div className="cart-items" key={product.id._id}>
+            {cartData?.product?.map((product: any) => {
+              return (
                 <div className="cart-item">
                   <img src={product.id.image} alt="Korean Pant" />
                   <div className="item-details">
@@ -128,9 +128,9 @@ function Page() {
                     </button>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
 
           <div className="cart-summary">
             <h3>Order Summary</h3>
