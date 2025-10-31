@@ -13,7 +13,7 @@ You can explore all features using the following demo account:
 
 | Email                | Password   |
 | -------------------- | ---------- |
-| `ankit123@gmail.com` | `ankit123` |
+| `ankit@gmail.com` | `ankit123` |
 
 ---
 
