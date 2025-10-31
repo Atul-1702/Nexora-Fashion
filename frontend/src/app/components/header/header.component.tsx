@@ -3,12 +3,37 @@ import Image from "next/image";
 import "./header.component.scss";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchedField } from "@/app/redux/user.slice";
+
+// ✅ Extract a small component that uses useSearchParams safely inside Suspense
+function CategoryLinks() {
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+
+  return (
+    <ul>
+      <Link href="/products?category=men" style={{ textDecoration: "none" }}>
+        <li className={category === "men" ? "active-link" : ""}>MEN</li>
+      </Link>
+      <Link href="/products?category=women" style={{ textDecoration: "none" }}>
+        <li className={category === "women" ? "active-link" : ""}>WOMEN</li>
+      </Link>
+      <Link
+        href="/products?category=accessories"
+        style={{ textDecoration: "none" }}
+      >
+        <li className={category === "accessories" ? "active-link" : ""}>
+          ACCESSORIES
+        </li>
+      </Link>
+    </ul>
+  );
+}
+
 function Header() {
-  const category = useSearchParams().get("category");
-  const ref = useRef(null);
+  const ref = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const { searchedValue, totalCartItem } = useSelector(
     (store: any) => store.userSlice
@@ -17,20 +42,20 @@ function Header() {
   const router = useRouter();
 
   useEffect(() => {
-    ref.current.value = searchedValue;
+    if (ref.current) {
+      ref.current.value = searchedValue;
+    }
   }, [searchedValue]);
 
   function getSearchValue() {
-    dispatch(setSearchedField(ref.current.value));
+    if (ref.current) {
+      dispatch(setSearchedField(ref.current.value));
+    }
   }
 
   useEffect(() => {
     const user = localStorage.getItem("userId");
-    if (!user) {
-      setLoginState(false);
-    } else {
-      setLoginState(true);
-    }
+    setLoginState(!!user);
   }, []);
 
   function onLogout() {
@@ -38,8 +63,10 @@ function Header() {
     localStorage.removeItem("userId");
     window.location.reload();
   }
+
   return (
     <header id="header-component-desktop-container">
+      {/* Top Section */}
       <section className="top-header-section">
         <figure className="quick-top-details">
           <Image
@@ -48,7 +75,6 @@ function Header() {
             height={16}
             alt="eye-icon"
           />
-
           <figcaption>Transparency</figcaption>
         </figure>
         <figure className="quick-top-details">
@@ -56,15 +82,15 @@ function Header() {
             src="/images/mobile-icon.svg"
             width={16}
             height={16}
-            alt="eye-icon"
+            alt="mobile-icon"
           />
-
           <figcaption>
             <a href="tel:+919876543210">Customer Care</a>
           </figcaption>
         </figure>
       </section>
 
+      {/* Middle Section */}
       <section className="middle-header-section">
         <h1 className="nexora-logo">
           <Link href="/">
@@ -76,16 +102,18 @@ function Header() {
             />
           </Link>
         </h1>
+
         <div className="search-container">
           <input ref={ref} type="text" placeholder="Search for products..." />
           <Image
             src="/images/magnifying-glass-icon.svg"
             width={16}
             height={16}
-            alt="magnifying class"
+            alt="magnifying-glass"
             onClick={getSearchValue}
           />
         </div>
+
         <div className="cart-and-user-container">
           <figure className="cart-container-header">
             <Link href="/cart">
@@ -114,7 +142,7 @@ function Header() {
               ) : (
                 <ul>
                   <Link style={{ textDecoration: "none" }} href="/">
-                    <li onClick={() => onLogout()}>Logout</li>
+                    <li onClick={onLogout}>Logout</li>
                   </Link>
                 </ul>
               )}
@@ -123,29 +151,12 @@ function Header() {
         </div>
       </section>
 
+      {/* Bottom Section */}
       <section className="botton-header-section">
-        <ul>
-          <Link
-            href="/products?category=men"
-            style={{ textDecoration: "none" }}
-          >
-            <li className={category === "men" ? "active-link" : ""}>MEN</li>
-          </Link>
-          <Link
-            href="/products?category=women"
-            style={{ textDecoration: "none" }}
-          >
-            <li className={category === "women" ? "active-link" : ""}>WOMEN</li>
-          </Link>
-          <Link
-            href="/products?category=accessories"
-            style={{ textDecoration: "none" }}
-          >
-            <li className={category === "accessories" ? "active-link" : ""}>
-              ACCESSORIES
-            </li>
-          </Link>
-        </ul>
+        {/* ✅ Wrap only this part in Suspense */}
+        <Suspense fallback={<div>Loading categories...</div>}>
+          <CategoryLinks />
+        </Suspense>
       </section>
     </header>
   );
