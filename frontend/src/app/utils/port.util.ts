@@ -1,3 +1,3 @@
-const ServerPORT = "http://localhost:3000/api/";
+const ServerPORT = "https://nexora-fashion.onrender.com/api/";
 
 export default ServerPORT;
