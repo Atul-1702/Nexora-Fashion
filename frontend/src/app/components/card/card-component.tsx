@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { setSearchedField, setTotalCartItem } from "@/app/redux/user.slice";
 import ServerPORT from "@/app/utils/port.util";
+import toast from "react-hot-toast";
 
 function CardComponent({ productData }: { productData: Product[] }) {
   const { searchedValue } = useSelector((store: any) => store.userSlice);
@@ -71,7 +72,7 @@ function CardComponent({ productData }: { productData: Product[] }) {
       router.push("/login");
       return;
     }
-
+    toast.loading("Adding to cart...");
     const obj = {
       product: { id: p._id, quantity: 1 },
       userId,
@@ -85,29 +86,36 @@ function CardComponent({ productData }: { productData: Product[] }) {
       });
 
       if (res.ok) {
+        toast.dismiss();
         const data = await res.json();
 
         setCartData(data.data);
         dispatch(setTotalCartItem(data.data.product.length));
+        toast.success("Added to cart.");
       }
     } catch (err) {
-      console.error("Add to cart error:", err);
+      toast.dismiss();
+      toast.error("Add to cart error:", err);
     }
   }
 
   async function removeFromCart(p: Product) {
+    toast.loading("Removing from cart...");
     const res = await fetch(`${ServerPORT}cart/${cartData._id}/${p._id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
     if (res.ok) {
+      toast.dismiss();
       const data = await res.json();
       setCartData(data.data);
       dispatch(
         setTotalCartItem(data.data.product ? data.data.product.length : 0)
       );
+      toast.success("Removed from cart.");
     } else {
-      console.error("Add to cart error:");
+      toast.dismiss();
+      toast.error("Add to cart error:");
     }
   }
   if (!isClient) return null;
