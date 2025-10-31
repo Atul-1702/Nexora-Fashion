@@ -70,11 +70,13 @@ function Page() {
     if (res.ok) {
       toast.dismiss();
       const data = await res.json();
+
       setCartData(data.data);
       dispatch(
         setTotalCartItem(data.data.product ? data.data.product.length : 0)
       );
       toast.success("Item removed from cart successfully");
+      // window.location.reload();
     } else {
       toast.dismiss();
       toast.error("Something went wrong.");
@@ -93,10 +95,10 @@ function Page() {
         />
       ) : (
         <div className="cart-content">
-          <div className="cart-items" key={product.id._id}>
+          <div className="cart-items">
             {cartData?.product?.map((product: any) => {
               return (
-                <div className="cart-item">
+                <div className="cart-item" key={product.id._id}>
                   <img src={product.id.image} alt="Korean Pant" />
                   <div className="item-details">
                     <h3>{product.id.name}</h3>

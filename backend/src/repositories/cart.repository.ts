@@ -17,9 +17,15 @@ export async function getCartByUser(userId: string) {
 }
 
 export async function updateCartByUser(cart: any) {
-  const updatedCart = await cartModel.findByIdAndUpdate(cart._id, cart, {
-    new: true,
-  });
+  const updatedCart = await cartModel
+    .findByIdAndUpdate(cart._id, cart, {
+      new: true,
+    })
+    .populate({
+      path: "product.id",
+      model: "product",
+    })
+    .exec();
   return updatedCart;
 }
 
@@ -63,6 +69,14 @@ export async function updateProductQuantity(
       model: "product",
     })
     .exec();
+
+  return updatedCart;
+}
+
+export async function updateRemoveCartByUser(cart: any) {
+  const updatedCart = await cartModel.findByIdAndUpdate(cart._id, cart, {
+    new: true,
+  });
 
   return updatedCart;
 }

@@ -136,7 +136,7 @@ function CardContent({ productData }: { productData: Product[] }) {
                   : removeFromCart(product)
               }
             >
-              {cartData?.product?.some((p) => product._id == p.id)
+              {cartData?.product?.some((p) => product._id == p.id._id)
                 ? "Remove from Cart"
                 : "Add to Cart"}
             </button>

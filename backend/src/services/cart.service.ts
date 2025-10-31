@@ -56,13 +56,3 @@ export async function getCartByUserWithProductDetailsServcie(userId: string) {
     return await getCartByUserWithProductDetails(userId);
   });
 }
-
-export async function updateProductQuantityService(
-  userId: string,
-  productId: string,
-  quantity: number
-) {
-  return await catchErrorHelper(async () => {
-    return await updateProductQuantity(userId, productId, quantity);
-  });
-}
