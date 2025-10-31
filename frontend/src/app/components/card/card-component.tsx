@@ -1,30 +1,26 @@
-// CardComponent.tsx
 "use client";
 
 import { Product } from "@/app/models/product.zod";
 import "./card-component.scss";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { setSearchedField, setTotalCartItem } from "@/app/redux/user.slice";
 import ServerPORT from "@/app/utils/port.util";
 import toast from "react-hot-toast";
 
-function CardComponent({ productData }: { productData: Product[] }) {
+function CardContent({ productData }: { productData: Product[] }) {
   const { searchedValue } = useSelector((store: any) => store.userSlice);
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-
+  const searchParams = useSearchParams(); // ✅ Safe here — inside Suspense
   const [searchedData, setSearchedData] = useState<Product[]>([]);
   const [cartData, setCartData] = useState<any[]>([]);
   const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  useEffect(() => setIsClient(true), []);
 
   useEffect(() => {
     if (searchedValue.trim() === "") {
@@ -43,7 +39,6 @@ function CardComponent({ productData }: { productData: Product[] }) {
 
   useEffect(() => {
     if (!isClient) return;
-
     const userId = localStorage.getItem("userId");
     if (!userId) return;
 
@@ -73,10 +68,7 @@ function CardComponent({ productData }: { productData: Product[] }) {
       return;
     }
     toast.loading("Adding to cart...");
-    const obj = {
-      product: { id: p._id, quantity: 1 },
-      userId,
-    };
+    const obj = { product: { id: p._id, quantity: 1 }, userId };
 
     try {
       const res = await fetch(`${ServerPORT}cart`, {
@@ -88,7 +80,6 @@ function CardComponent({ productData }: { productData: Product[] }) {
       if (res.ok) {
         toast.dismiss();
         const data = await res.json();
-
         setCartData(data.data);
         dispatch(setTotalCartItem(data.data.product.length));
         toast.success("Added to cart.");
@@ -118,42 +109,52 @@ function CardComponent({ productData }: { productData: Product[] }) {
       toast.error("Add to cart error:");
     }
   }
+
   if (!isClient) return null;
+
   return (
     <div className="card-container">
-      {searchedData.map((product: Product, index: number) => {
-        return (
-          <div className="product-card" key={product._id}>
-            <div className="image-section">
-              <span className="badge">AVAILABLE</span>
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={240}
-                height={260}
-              />
-            </div>
-            <div className="details-section">
-              <h3>{product.name}</h3>
-              <p className="price">₹ {product.price?.toFixed(2)}</p>
-              <button
-                className="add-btn"
-                onClick={(e) =>
-                  e.currentTarget.innerText === "Add to Cart"
-                    ? addToCart(product)
-                    : removeFromCart(product)
-                }
-              >
-                {cartData?.product?.some((p) => product._id == p.id)
-                  ? "Remove from Cart"
-                  : "Add to Cart"}
-              </button>
-            </div>
+      {searchedData.map((product: Product) => (
+        <div className="product-card" key={product._id}>
+          <div className="image-section">
+            <span className="badge">AVAILABLE</span>
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={240}
+              height={260}
+            />
           </div>
-        );
-      })}
+          <div className="details-section">
+            <h3>{product.name}</h3>
+            <p className="price">₹ {product.price?.toFixed(2)}</p>
+            <button
+              className="add-btn"
+              onClick={(e) =>
+                e.currentTarget.innerText === "Add to Cart"
+                  ? addToCart(product)
+                  : removeFromCart(product)
+              }
+            >
+              {cartData?.product?.some((p) => product._id == p.id)
+                ? "Remove from Cart"
+                : "Add to Cart"}
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-export default CardComponent;
+export default function CardComponent({
+  productData,
+}: {
+  productData: Product[];
+}) {
+  return (
+    <Suspense fallback={<div>Loading products...</div>}>
+      <CardContent productData={productData} />
+    </Suspense>
+  );
+}
