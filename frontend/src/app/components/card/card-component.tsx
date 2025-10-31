@@ -100,6 +100,7 @@ function CardContent({ productData }: { productData: Product[] }) {
       toast.dismiss();
       const data = await res.json();
       setCartData(data.data);
+      console.log(data.data);
       dispatch(
         setTotalCartItem(data.data.product ? data.data.product.length : 0)
       );
@@ -136,7 +137,7 @@ function CardContent({ productData }: { productData: Product[] }) {
                   : removeFromCart(product)
               }
             >
-              {cartData?.product?.some((p) => product._id == p.id._id)
+              {cartData?.product?.some((p) => product.id._id == p.id._id)
                 ? "Remove from Cart"
                 : "Add to Cart"}
             </button>
