@@ -44,7 +44,7 @@ function CardContent({ productData }: { productData: Product[] }) {
 
     (async () => {
       try {
-        const res = await fetch(`${ServerPORT}cart/${userId}`, {
+        const res = await fetch(`${ServerPORT}cart/product/${userId}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
           cache: "no-store",
