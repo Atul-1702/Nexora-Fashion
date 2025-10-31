@@ -4,9 +4,13 @@ import cartModel from "../models/cart.model";
 import productModel from "../models/product.model";
 
 export async function addToCart(cart: cartdto) {
-  const cartDB = cartModel.create(cart);
-  (await cartDB).save();
-  return cartDB;
+  const cartDB = await cartModel.create(cart);
+
+  const populatedCart = await cartDB.populate({
+    path: "product.id",
+    model: "product",
+  });
+  return populatedCart;
 }
 
 export async function getCartByUser(userId: string) {
