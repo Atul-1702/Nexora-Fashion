@@ -92,7 +92,7 @@ function CardContent({ productData }: { productData: Product[] }) {
 
   async function removeFromCart(p: Product) {
     toast.loading("Removing from cart...");
-    const res = await fetch(`${ServerPORT}cart/${cartData._id}/${p._id}`, {
+    const res = await fetch(`${ServerPORT}cart/${cartData._id}/${p.id._id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
@@ -137,7 +137,7 @@ function CardContent({ productData }: { productData: Product[] }) {
                   : removeFromCart(product)
               }
             >
-              {cartData?.product?.some((p) => product.id._id == p.id._id)
+              {cartData?.product?.some((p) => product._id == p.id._id)
                 ? "Remove from Cart"
                 : "Add to Cart"}
             </button>
