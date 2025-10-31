@@ -4,7 +4,9 @@ import {
   deleteCartItem,
   getCartById,
   getCartByUser,
+  getCartByUserWithProductDetails,
   updateCartByUser,
+  updateProductQuantity,
 } from "../repositories/cart.repository";
 import { NotFoundError } from "../utils/app.error";
 import catchErrorHelper from "../utils/catch.error";
@@ -47,4 +49,20 @@ export async function getCartByUserServcie(userId: string) {
     throw new NotFoundError("Products does not exists in cart.");
   }
   return userCart;
+}
+
+export async function getCartByUserWithProductDetailsServcie(userId: string) {
+  return await catchErrorHelper(async () => {
+    return await getCartByUserWithProductDetails(userId);
+  });
+}
+
+export async function updateProductQuantityService(
+  userId: string,
+  productId: string,
+  quantity: number
+) {
+  return await catchErrorHelper(async () => {
+    return await updateProductQuantity(userId, productId, quantity);
+  });
 }
